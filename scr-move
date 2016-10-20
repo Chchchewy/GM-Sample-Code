@@ -1,0 +1,84 @@
+///scr_move()
+
+up_key = keyboard_check_pressed(vk_up);
+down_key = keyboard_check_pressed(vk_down);
+right_key = keyboard_check_pressed(vk_right);
+left_key = keyboard_check_pressed(vk_left);
+strafe_key = keyboard_check(vk_lshift);
+
+// Forward and Back movement variables
+var vect_x = lengthdir_x(32, target_dir);
+var vect_y = lengthdir_y(32, target_dir);
+
+// Move Forward, with Wall Collision Check
+if (up_key){
+    if (!place_meeting(target_x+vect_x, target_y+vect_y, o_wall)) {
+        target_x += vect_x;
+        target_y += vect_y;
+    }
+}
+
+// Move Back, with Wall Collision Check
+if (down_key){
+    if (!place_meeting(target_x-vect_x, target_y-vect_y, o_wall)) {
+        target_x -= vect_x;
+        target_y -= vect_y;
+    }
+}
+
+// Turning and Strafing, with Wall Collision Checks
+if (strafe_key) {
+    // if Facing North
+    if ((target_dir == 90) || (target_dir == -270)) {
+        if (right_key) {
+            if (!place_meeting(x+16, y, o_wall)) {
+                target_x += 32;
+            }
+        } else if (left_key) {
+            if (!place_meeting(x-16, y, o_wall)) {
+                target_x -= 32;
+            }
+        }
+    // if Facing South
+    } else if ((target_dir == -90) || (target_dir == 270)) {
+        if (right_key) {
+            if (!place_meeting(x-16, y, o_wall)) {
+                target_x -= 32;
+            }
+        } else if (left_key) {
+            if (!place_meeting(x+16, y, o_wall)) {
+                target_x += 32;
+            }
+        }
+    // if Facing West
+    } else if ((target_dir == 180) || (target_dir == -180)) {
+        if (right_key) {
+            if (!place_meeting(x, y-16, o_wall)) {
+                target_y -= 32;
+            }
+        } else if (left_key) {
+            if (!place_meeting(x, y+16, o_wall)) {
+                target_y += 32;
+            }
+        }
+    // if Facing East
+    } else if ((target_dir == 360) || (target_dir == -360) || (target_dir == 0)) {
+        if (right_key) {
+            if (!place_meeting(x, y+16, o_wall)) {
+                target_y += 32;
+            }
+        } else if (left_key) {
+            if (!place_meeting(x, y-16, o_wall)) {
+                target_y -= 32;
+            }
+        }
+    }
+} else if (!strafe_key) {
+    if (right_key){
+            // Turn Right
+            target_dir -= 90;
+        } else if (left_key){
+            // Turn Left
+            target_dir += 90;
+        }
+}
