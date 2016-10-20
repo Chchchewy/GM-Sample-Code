@@ -1,0 +1,16 @@
+/// Interpolate between Actual Position and Target Position
+
+dir = lerp(dir, target_dir, .1);
+x = lerp(x, target_x, .1);
+y = lerp(y, target_y, .1);
+
+// Limit Direction Range
+if (target_dir >= 360) {
+    dir -= 360;
+    target_dir = 0;
+} else if (target_dir <= -360){
+    dir += 360;
+    target_dir = 0;
+}
+
+scr_move();
